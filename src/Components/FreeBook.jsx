@@ -47,14 +47,14 @@ const FreeBook = () => {
     <>
       <div className="bg-gray-100  max-w-screen-2xl container max-auto md:px-20 px-4 py-10 ">
         <h1 className="text-black font-bold ">FreeBook</h1>
-        <p className="text-black">
+        <p className="text-black my-10">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab
           blanditiis quod, iste autem porro earum sint quas maiores assumenda
           quaerat et! Distinctio alias repudiandae neque nobis dicta. Obcaecati,
           libero esse.
         </p>
-        <div>
-          <Slider {...settings} className=" flex my-10  " >
+        <div className=" my-10">
+          <Slider {...settings}  >
             {fiterData.map((data) => {
               return <Card data={data} key={data.id} />;
             })}

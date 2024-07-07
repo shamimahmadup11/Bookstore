@@ -1,8 +1,8 @@
 const Card = ({ data }) => {
-    
+
     return (
       <>
-      <div className="card bg-base-100 w-64 h-74 shadow-xl">
+      <div className="card bg-base-100 w-64 h-74 shadow-xl m-2">
   <figure>
     <img
       src={data.imgae}
@@ -15,9 +15,11 @@ const Card = ({ data }) => {
       <div className="badge badge-secondary ">{data.category}</div>
     </h2>
     <p className="text-black">{data.title}!</p>
+    <div className="text-black"> price : {data.price}</div>
     <div className="card-actions justify-end">
-      <div className="badge badge-outline"> price : {data.price}</div>
-      
+     
+      <div className="badge badge-outline bg-blue-500 hover:bg-green-500 cursor-pointer text-sm h- text-white "> Buy Now </div>
+
     </div>
   </div>
 </div>
