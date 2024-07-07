@@ -10,7 +10,10 @@ const Navbar = () => {
     password: "",
   });
 
-  console.log(formData?.email);
+const hndlelogin=()=>{
+   
+    setLogin(!login)
+}
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -48,9 +51,12 @@ const Navbar = () => {
           <a>Courses</a>
         </li>
       </Link>
-      <li className="text-black">
+      <Link to="/contact">
+      <li  className="text-black">
         <a>Contact</a>
       </li>
+      </Link>
+      
       <li className="text-black">
         <a>About</a>
       </li>
@@ -153,7 +159,7 @@ const Navbar = () => {
           <div>
             <a
               className=" bg-black text-white p-2 rounded hover:bg-slate-800  duration-300 cursor-pointer "
-              onClick={() => document.getElementById("my_modal_1").showModal()}
+              onClick={() => document.getElementById("my_modal_1").showModal() && hndlelogin()}
             >
               {login ? "Signup" : "Login"}
             </a>

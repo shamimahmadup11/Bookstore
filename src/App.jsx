@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Signup from "./Components/Signup";
+import Contact from "./Components/Contact";
 
 function App() {
   const router=createBrowserRouter([
@@ -32,6 +33,14 @@ function App() {
       element: <> 
        <Navbar/>
       <Signup/>
+      <Footer/>
+      </>
+    },
+    {
+      path:'/contact',
+      element: <> 
+       <Navbar/>
+      <Contact/>
       <Footer/>
       </>
     },

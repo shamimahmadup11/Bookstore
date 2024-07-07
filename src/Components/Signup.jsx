@@ -1,6 +1,34 @@
 
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
+import { useState } from "react";
 const Signup = () => {
+  const [errors, setErrors] = useState();
+const navigate=useNavigate();
+  const [signupData, setSignupData] = useState({
+    name:"",
+    email: "",
+    password: "",
+  });
+
+  const handleSignup=()=>{
+
+    let errors=[]
+    if(!signupData.name){
+      errors.push({name: "name" , massage:"Name is required"})
+    }
+    if(!signupData.email){
+      errors.push({email: "email" , massage:"Email is required"})
+    }
+    if(!signupData.password){
+      errors.push({password: "password" , massage:"Password is required"})
+    }
+    setErrors(errors)
+    if(errors.length===0){
+      navigate("/")
+    }
+  }
+
+
   return (
     <div className=" bg-gray-100 flex align-middle justify-center h-screen ">
    <div id="my_modal_1" className="h-auto  w-1/2"  >
@@ -13,8 +41,14 @@ const Signup = () => {
                     type="text"
                     className="grow outline-none   bg-gray-100  text-black   "
                     placeholder="Enter your full name "
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, name: e.target.value })
+                    }
                   />
                 </label>
+                <p className="text-red-600 ">
+                  {errors?.find((err) => err.name === "name")?.massage}
+                </p>
               </div>
               <div>
                 <h1 className=" text-black ml-2 "> Email :</h1>
@@ -23,8 +57,14 @@ const Signup = () => {
                     type="Email"
                     className="grow outline-none   bg-gray-100  text-black   "
                     placeholder="Email"
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, email: e.target.value })
+                    }
                   />
                 </label>
+                <p className="text-red-600 ">
+                  {errors?.find((err) => err.email === "email")?.massage}
+                </p>
               </div>
               <div>
                 <h1 className=" text-black ml-2 "> Password :</h1>
@@ -33,14 +73,21 @@ const Signup = () => {
                     type="Password"
                     className="grow outline-none bg-gray-100 text-black   "
                     placeholder="Password"
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, password: e.target.value })
+                    }
                   />
                 </label>
+                <p className="text-red-600 ">
+                  {errors?.find((err) => err.password === "password")?.massage}
+                </p>
               </div>
               <div className="flex justify-around">
                 {/* <span className="text-black">Not Registor ?</span> */}
-                <Link to='/' className=" bg-pink-600 rounded h-12 w-24 px-5 py-3 mt-4 cursor-pointer text-white">
+                <Link  className=" bg-pink-600 rounded h-12 w-24 px-5 py-3 mt-4 cursor-pointer text-white" onClick={()=>handleSignup()}>
                   Signup
                 </Link>
+
                 <div className="mt-8">
                    <span className="text-black">Have Account?</span>
                 <button  onClick={() => document.getElementById("my_modal_1").showModal()} className="text-blue-700">
