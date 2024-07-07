@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
-  const [login , setLogin]=useState(false);
+  const [login, setLogin] = useState(false);
+  const [errors, setErrors] = useState();
 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  console.log(formData?.email);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -18,10 +25,16 @@ const Navbar = () => {
     };
   }, []);
 
-//   const handleLoginBtn=()=>{
-//     setLogin(!login)
-//     alert("send")
-//   }
+  const hndleSubmit = () => {
+    let errors = [];
+    if (!formData.email) {
+      errors.push({ name: "email", message: "Email is required" });
+    }
+    if (!formData.password) {
+      errors.push({ name: "password", message: "Password is required" });
+    }
+    setErrors(errors);
+  };
 
   const navItems = (
     <>
@@ -140,10 +153,9 @@ const Navbar = () => {
           <div>
             <a
               className=" bg-black text-white p-2 rounded hover:bg-slate-800  duration-300 cursor-pointer "
-              onClick={() => document.getElementById("my_modal_1").showModal() }
-
+              onClick={() => document.getElementById("my_modal_1").showModal()}
             >
-              { login?"Signup":"Login"}
+              {login ? "Signup" : "Login"}
             </a>
           </div>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -151,42 +163,64 @@ const Navbar = () => {
             <div className="modal-box bg-gray-100 flex flex-col gap-7">
               <h3 className="font-bold text-lg text-pink-500">Login!</h3>
               <div>
-                <h1 className=" text-black ml-2 "> Email :</h1>
+                <h1 className=" text-black ml-2 "> Email <span className="text-black">*</span> :</h1>
                 <label className="px-3 py-1 border rounded-md flex items-center gap-2 bg-gray-100 ">
+                  
                   <input
                     type="Email"
                     className="grow outline-none   bg-gray-100  text-black   "
                     placeholder="Email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                   />
                 </label>
+                <p className="text-red-600 ">
+                  {errors?.find((err) => err.name === "email")?.message}
+                </p>
               </div>
               <div>
-                <h1 className=" text-black ml-2 "> Password :</h1>
+                <h1 className=" text-black ml-2 "> Password <span className="text-black">*</span> :</h1>
                 <label className="px-3 py-1 border rounded-md flex items-center gap-2 bg-gray-100 ">
+                  
                   <input
                     type="Password"
                     className="grow outline-none bg-gray-100 text-black   "
                     placeholder="Password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
                 </label>
+                <p className="text-red-600 ">
+                  {errors?.find((err) => err.name === "password")?.message}
+                </p>
               </div>
 
               <div className="flex flex-col gap-2 mt-2">
-                <button  className=" bg-red-500 rounded px-2 py-2  cursor-pointer text-white">Login</button>
+                <button
+                  className=" bg-pink-500 rounded px-2 py-2  cursor-pointer text-white"
+                  onClick={() => hndleSubmit()}
+                >
+                  Login
+                </button>
                 <div>
-                <span className="text-black">Not Registor ?</span>
-                <Link to='/signup' className=" text-blue-700" >
-                  Signup
-                </Link>
+                  <span className="text-black">Not Registor ?</span>
+                  <Link to="/signup" className=" text-blue-700">
+                    Signup
+                  </Link>
                 </div>
-               
               </div>
 
               <div className="modal-action">
                 <form method="dialog ">
                   {/* if there is a button in form, it will close the modal */}
                   <div className=" flex justify-around ">
-                    <button className="btn text-white">Close</button>
+                    <Link to="/" className="btn text-white">
+                      Close
+                    </Link>
                   </div>
                 </form>
               </div>
