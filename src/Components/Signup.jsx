@@ -2,6 +2,8 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
+
+import toast from "react-hot-toast";
 const Signup = () => {
   const [errors, setErrors] = useState();
   const navigate = useNavigate();
@@ -44,7 +46,8 @@ const Signup = () => {
         localStorage.setItem("user" , JSON.stringify(res.data.user) )
       }).catch((e)=>{
       console.log(e);
-      alert(" someting went wrong")
+     
+      toast.success("Something went wrong");
     })
 }
 

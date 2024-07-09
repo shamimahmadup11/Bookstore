@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { useAuth } from "../Context/AuthProvider";
+import Logout from "./Logout";
+import { useNavigate } from 'react-router-dom';
+
 const Navbar = () => {
   const [scroll, setScroll] = useState(false);
   const [login, setLogin] = useState(false);
   const [errors, setErrors] = useState();
+  const nevigate = useNavigate();
+  const [authUser, setAuthUser] = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-const hndlelogin=()=>{
-   
-    setLogin(!login)
-}
+  const hndlelogin = async () => {
+    setLogin(!login);
+  };
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -28,7 +36,8 @@ const hndlelogin=()=>{
     };
   }, []);
 
-  const hndleSubmit = () => {
+  const handleSubmit = async () => {
+    // e.preventDefault();
     let errors = [];
     if (!formData.email) {
       errors.push({ name: "email", message: "Email is required" });
@@ -37,6 +46,27 @@ const hndlelogin=()=>{
       errors.push({ name: "password", message: "Password is required" });
     }
     setErrors(errors);
+    // if (errors.length === 0) {
+    const userInfo = {
+      email: formData.email,
+      password: formData.password,
+    };
+    console.log(userInfo);
+    try {
+      const response = await axios.post(
+        "http://localhost:4002/user/login",
+        userInfo
+      );
+      console.log(response.data);
+      if (response.data) {
+        toast.success("Login Successfull!");
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+    
+      }
+    } catch (error) {
+      console.log(error);
+      toast.success("Something went wrong");
+    }
   };
 
   const navItems = (
@@ -52,11 +82,11 @@ const hndlelogin=()=>{
         </li>
       </Link>
       <Link to="/contact">
-      <li  className="text-black">
-        <a>Contact</a>
-      </li>
+        <li className="text-black">
+          <a>Contact</a>
+        </li>
       </Link>
-      
+
       <li className="text-black">
         <a>About</a>
       </li>
@@ -101,6 +131,9 @@ const hndlelogin=()=>{
               <a>Bookstore</a>
             </li>
           </Link>
+          <div>
+            <Toaster />
+          </div>
         </div>
         <div className=" navbar-end gap-4">
           <div className="navbar-center hidden lg:flex">
@@ -156,22 +189,29 @@ const hndlelogin=()=>{
             </label>
           </div>
 
-          <div>
-            <a
-              className=" bg-black text-white p-2 rounded hover:bg-slate-800  duration-300 cursor-pointer "
-              onClick={() => document.getElementById("my_modal_1").showModal() && hndlelogin()}
-            >
-              {login ? "Signup" : "Login"}
-            </a>
-          </div>
+          {authUser ? (
+            <Logout />
+          ) : (
+            <div>
+              <a
+                className=" bg-black text-white p-2 rounded hover:bg-slate-800  duration-300 cursor-pointer "
+                onClick={() =>
+                  document.getElementById("my_modal_1").showModal() &&
+                  hndlelogin()
+                }
+              > Login</a>
+            </div>
+          )}
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <dialog id="my_modal_1" className="modal ">
             <div className="modal-box bg-gray-100 flex flex-col gap-7">
               <h3 className="font-bold text-lg text-pink-500">Login!</h3>
               <div>
-                <h1 className=" text-black ml-2 "> Email <span className="text-black">*</span> :</h1>
+                <h1 className=" text-black ml-2 ">
+                  {" "}
+                  Email <span className="text-black">*</span> :
+                </h1>
                 <label className="px-3 py-1 border rounded-md flex items-center gap-2 bg-gray-100 ">
-                  
                   <input
                     type="Email"
                     className="grow outline-none   bg-gray-100  text-black   "
@@ -187,9 +227,11 @@ const hndlelogin=()=>{
                 </p>
               </div>
               <div>
-                <h1 className=" text-black ml-2 "> Password <span className="text-black">*</span> :</h1>
+                <h1 className=" text-black ml-2 ">
+                  {" "}
+                  Password <span className="text-black">*</span> :
+                </h1>
                 <label className="px-3 py-1 border rounded-md flex items-center gap-2 bg-gray-100 ">
-                  
                   <input
                     type="Password"
                     className="grow outline-none bg-gray-100 text-black   "
@@ -208,7 +250,7 @@ const hndlelogin=()=>{
               <div className="flex flex-col gap-2 mt-2">
                 <button
                   className=" bg-pink-500 rounded px-2 py-2  cursor-pointer text-white"
-                  onClick={() => hndleSubmit()}
+                  onClick={() => handleSubmit(formData)}
                 >
                   Login
                 </button>
@@ -224,9 +266,14 @@ const hndlelogin=()=>{
                 <form method="dialog ">
                   {/* if there is a button in form, it will close the modal */}
                   <div className=" flex justify-around ">
-                    <Link to="/" className="btn text-white">
-                      Close
-                    </Link>
+                  <button
+              className="btn text-white"
+              onClick={() => {
+                nevigate('/') // Navigate to home page
+              }}
+            >
+              Close
+            </button>
                   </div>
                 </form>
               </div>

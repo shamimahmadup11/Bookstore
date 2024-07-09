@@ -9,8 +9,12 @@ import {
 } from "react-router-dom";
 import Signup from "./Components/Signup";
 import Contact from "./Components/Contact";
+import { useAuth } from "./Context/AuthProvider";
 
 function App() {
+
+  const [authUser , setAuthUser]=useAuth();
+console.log(authUser)
   const router=createBrowserRouter([
     {
       path:'/',
@@ -24,7 +28,9 @@ function App() {
       path:'/course',
       element: <> 
        <Navbar/>
-      <Course/>
+       {
+        authUser? <Course/>:<Signup/>
+       }
       <Footer/>
       </>
     },
