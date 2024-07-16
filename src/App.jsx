@@ -10,6 +10,7 @@ import {
 import Signup from "./Components/Signup";
 import Contact from "./Components/Contact";
 import { useAuth } from "./Context/AuthProvider";
+import About from "./Components/About";
 
 function App() {
 
@@ -50,6 +51,15 @@ console.log(authUser)
       <Footer/>
       </>
     },
+    {
+      path:'/about',
+      element: <> 
+       <Navbar/>
+      <About/>
+      <Footer/>
+      </>
+    },
+    
   ]
   )
  

@@ -86,10 +86,13 @@ const Navbar = () => {
           <a>Contact</a>
         </li>
       </Link>
-
-      <li className="text-black">
+  
+  <Link to="/about">
+  <li className="text-black">
         <a>About</a>
       </li>
+      </Link>
+     
     </>
   );
   return (
